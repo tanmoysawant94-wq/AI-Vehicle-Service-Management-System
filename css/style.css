@@ -1,0 +1,43 @@
+body{
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.hero{
+    background:linear-gradient(135deg,#0d6efd,#00b4d8);
+    color:white;
+    padding:100px 0;
+}
+
+.hero img{
+    width:100%;
+    animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+
+0%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-15px);
+}
+
+100%{
+transform:translateY(0px);
+}
+
+}
+
+.card{
+    border:none;
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+footer{
+    margin-top:40px;
+}

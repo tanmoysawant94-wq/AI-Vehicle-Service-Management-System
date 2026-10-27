@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Vehicle Assistant</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:
+        radial-gradient(circle at 88% 8%, rgba(13,110,253,.14), transparent 28%),
+        radial-gradient(circle at 12% 92%, rgba(25,135,84,.12), transparent 24%),
+        linear-gradient(135deg, #eef3f8 0%, #f8fafc 48%, #e8f0f7 100%);
+    font-family:Arial,Helvetica,sans-serif;
+    position:relative;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.24;
+    background-image:
+        linear-gradient(115deg, transparent 0 48%, rgba(13,110,253,.08) 49%, transparent 50%),
+        linear-gradient(25deg, transparent 0 48%, rgba(25,135,84,.06) 49%, transparent 50%);
+    background-size:42px 42px, 68px 68px;
+}
+
+.sidebar{
+    width:280px;
+    height:100vh;
+    background:#1f2937;
+    color:white;
+    position:fixed;
+    overflow:auto;
+}
+
+.sidebar h4{
+    padding:20px;
+    text-align:center;
+}
+
+.sidebar button{
+    width:90%;
+    margin:10px;
+}
+
+.chat-list{
+    padding:15px;
+}
+
+.chat-item{
+    background:#374151;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+
+.main{
+    margin-left:280px;
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+}
+
+.header{
+    background:white;
+    padding:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.chat-body{
+    flex:1;
+    overflow-y:auto;
+    padding:25px;
+    background:rgba(255,255,255,.28);
+}
+
+.user{
+    text-align:right;
+    margin-bottom:20px;
+}
+
+.user span{
+    background:#0d6efd;
+    color:white;
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:15px;
+}
+
+.ai{
+    margin-bottom:20px;
+}
+
+.ai span{
+    background:white;
+    display:inline-block;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,.15);
+}
+
+.footer{
+    background:white;
+    padding:15px;
+}
+
+textarea{
+    resize:none;
+}
+
+.suggestions button{
+    margin:5px;
+}
+
+</style>
+<link rel="stylesheet" href="css/background.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h4>
+<i class="fas fa-robot"></i><br>
+Vehicle AI
+</h4>
+
+<div class="text-center">
+<button
+type="button"
+class="btn btn-primary"
+onclick="startNewChat()">
++ New Chat
+</button>
+    
+</div>
+
+<div class="chat-list">
+
+<div class="chat-item" onclick="suggestion('Brake Pad Cost')">
+Brake Pad Cost
+</div>
+
+<div class="chat-item" onclick="suggestion('Battery Warranty')">
+Battery Warranty
+</div>
+
+<div class="chat-item" onclick="suggestion('Engine Oil')">
+Engine Oil
+</div>
+
+<div class="chat-item" onclick="suggestion('Service Status')">
+Service Status
+</div>
+
+<div class="chat-item" onclick="suggestion('AC Repair')">
+AC Repair
+</div>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="header d-flex justify-content-between">
+
+<h4>
+AI Vehicle Assistant
+</h4>
+<a href="customer/dashboard.html"
+class="btn btn-primary">
+
+Dashboard
+
+</a>
+<a href="vehicle-parts.html" class="btn btn-outline-primary ms-2">Vehicle &amp; Parts Catalogue</a>
+
+</div>
+
+<div class="chat-body" id="chatArea">
+
+<div class="ai" id="welcomeMessage">
+
+<span>
+
+👋 Hello! I am your AI Vehicle Assistant.
+
+Ask me about symptoms, possible vehicle problems, and services, or ask me anything about
+
+<ul>
+
+<li>Possible problems from engine noise, low mileage, or overheating</li>
+
+<li>Vehicle Repairs</li>
+
+<li>Estimated Cost</li>
+
+<li>Service Time</li>
+
+<li>Warranty</li>
+
+<li>Engine Oil</li>
+
+<li>Parts</li>
+
+<li>Service Booking</li>
+
+<li>Vehicle Status</li>
+
+</ul>
+
+</span>
+
+</div>
+
+</div>
+
+<div class="container-fluid">
+
+<div class="suggestions">
+
+<button
+type="button"
+class="btn btn-outline-danger"
+onclick="suggestion('My engine is making a knocking noise')">
+Engine Noise
+</button>
+
+<button
+type="button"
+class="btn btn-outline-warning"
+onclick="suggestion('My car has low mileage and uses too much fuel')">
+Low Mileage
+</button>
+
+<button
+type="button"
+class="btn btn-outline-danger"
+onclick="suggestion('My car is overheating')">
+Overheating
+</button>
+
+<button
+type="button"
+class="btn btn-outline-primary"
+onclick="suggestion('Oil Change Cost')">
+Oil Change Cost
+</button>
+
+<button
+type="button"
+class="btn btn-outline-success"
+onclick="suggestion('Battery Warranty')">
+Battery Warranty
+</button>
+
+<button
+type="button"
+class="btn btn-outline-danger"
+onclick="suggestion('Engine Repair')">
+Engine Repair
+</button>
+
+<button
+type="button"
+class="btn btn-outline-warning"
+onclick="suggestion('Track My Vehicle')">
+Track My Vehicle
+</button>
+
+
+</div>
+
+</div>
+
+<div class="footer">
+
+<div class="row">
+
+<div class="col-md-10">
+
+<textarea
+id="userMessage"
+class="form-control"
+rows="2"
+placeholder="Describe symptoms, e.g. engine noise, low mileage, or overheating..."></textarea>
+
+</div>
+
+<div class="col-md-2 d-grid">
+<button
+type="button"
+class="btn btn-primary mb-2"
+onclick="sendMessage()">
+
+<i class="fas fa-paper-plane"></i>
+
+Send
+
+</button>
+
+<button
+type="button"
+class="btn btn-success"
+onclick="notify('Voice feature coming soon!')">
+
+<i class="fas fa-microphone"></i>
+
+Voice
+
+</button>
+
+</div>
+
+</div>
+
+<div class="mt-3">
+
+<input
+type="file"
+class="form-control">
+
+<small class="text-muted">
+
+Upload a photo of the damaged vehicle or part.
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/vehicle-catalog.js?v=price-breakdown-1"></script>
+<script src="js/script.js?v=vehicle-problem-prediction-2"></script>
+</body>
+</html>

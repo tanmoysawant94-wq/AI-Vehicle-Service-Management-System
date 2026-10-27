@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Book Service</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:#f4f7fc;
+}
+
+.header{
+    background:#0d6efd;
+    color:white;
+    padding:25px;
+}
+
+.booking-card{
+    background:white;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    padding:30px;
+    margin-top:30px;
+}
+
+.summary{
+    background:#eef6ff;
+    border-left:5px solid #0d6efd;
+    padding:20px;
+    border-radius:10px;
+}
+
+.btn-book{
+    width:100%;
+    height:50px;
+    font-size:18px;
+}
+
+</style>
+<link rel="stylesheet" href="css/background.css">
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="container">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<h2 class="mb-0">
+
+<i class="fas fa-calendar-check"></i>
+
+Book Vehicle Service
+
+</h2>
+
+<a href="customer/dashboard.html" class="btn btn-light">
+<i class="fas fa-arrow-left"></i>
+ Back to Dashboard
+</a>
+<a href="vehicle-parts.html" class="btn btn-outline-light ms-2">
+Find a part
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="booking-card">
+
+<form id="bookingForm">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Vehicle
+
+</label>
+
+<select class="form-select" id="bookingVehicle" required>
+
+</select>
+<div class="form-text">Select a make and model from the India vehicle catalog.</div>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Service Type
+
+</label>
+
+<select class="form-select" id="serviceType" onchange="updateBookingEstimate()" required>
+
+<option>General Service</option>
+
+<option>Oil Change</option>
+
+<option>Brake Service</option>
+
+<option>Battery Replacement</option>
+
+<option>Engine Repair</option>
+
+<option>AC Service</option>
+
+<option>Wheel Alignment</option>
+
+<option>Tyre Replacement</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-12 mb-3">
+
+<label class="form-label" for="bookingGarage">Select Garage</label>
+
+<select class="form-select" id="bookingGarage" required>
+<option value="">Loading available garages...</option>
+</select>
+<div class="form-text">Garages are listed when they offer the selected service.</div>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Preferred Date
+
+</label>
+
+<input type="date" id="bookingDate" class="form-control" required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label" for="bookingHour">Preferred Time</label>
+
+<div class="row g-2">
+  <div class="col-4">
+    <select id="bookingHour" class="form-select" aria-label="Appointment hour" required>
+      <option value="">Hour</option>
+    </select>
+  </div>
+  <div class="col-4">
+    <select id="bookingMinute" class="form-select" aria-label="Appointment minute" required>
+      <option value="">Minute</option>
+    </select>
+  </div>
+  <div class="col-4">
+    <select id="bookingPeriod" class="form-select" aria-label="AM or PM" required>
+      <option value="">AM/PM</option>
+      <option value="AM">AM</option>
+      <option value="PM">PM</option>
+    </select>
+  </div>
+</div>
+<div class="form-text">Choose the appointment start time and select AM or PM.</div>
+
+</div>
+
+</div>
+
+<div class="mb-3">
+<label class="form-label" for="vehicleNumber">Vehicle Registration Number</label>
+<input type="text" id="vehicleNumber" class="form-control" maxlength="30" placeholder="e.g. MH12AB1234" required>
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Describe Your Problem
+
+</label>
+
+<textarea
+class="form-control"
+id="problemDescription"
+rows="5"
+placeholder="Example: My car is making noise while braking..."
+required></textarea>
+
+</div>
+
+<hr>
+
+<h4>
+
+Estimated Service
+
+</h4>
+
+<div class="summary">
+
+<p>
+
+<b>Estimated Cost:</b>
+<span id="estimatedCost">₹3,500</span>
+
+</p>
+
+<p>
+
+<b>Estimated Time:</b>
+
+<span id="estimatedTime">2 hours</span>
+
+</p>
+
+<p>
+
+<b>Warranty:</b>
+
+<span id="estimatedWarranty">Confirmed after inspection</span>
+
+</p>
+
+<p>
+
+<b>Recommended Parts:</b>
+
+<span id="recommendedParts">Inspection determines required parts</span>
+
+</p>
+
+<p>
+
+<b>Pickup Available:</b>
+
+Yes
+
+</p>
+
+</div>
+
+<div id="bookingMessage" class="alert alert-danger" role="alert" hidden></div>
+
+<br>
+
+<div class="d-grid gap-2 d-md-flex">
+
+<button type="submit" class="btn btn-primary btn-book">
+
+<i class="fas fa-check-circle"></i>
+
+Confirm Booking
+
+</button>
+
+<button type="reset" class="btn btn-outline-secondary btn-book">
+<i class="fas fa-xmark"></i>
+ Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/vehicle-catalog.js?v=price-breakdown-1"></script>
+<script src="js/script.js?v=booking-time-ampm-2"></script>
+</body>
+</html>

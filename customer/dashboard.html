@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{background:#f4f7fc;font-family:Arial,Helvetica,sans-serif}
+.sidebar{width:230px;min-height:100vh;position:fixed;background:#0d6efd;color:#fff;padding:22px}
+.sidebar a{display:block;color:#fff;text-decoration:none;padding:12px 0}
+.content{margin-left:230px;padding:30px}
+.card{border:0;border-radius:14px}
+.payment-dialog{width:min(92vw,500px);max-height:92vh;overflow:auto;border:0;border-radius:18px;padding:24px;box-shadow:0 16px 48px #0004}
+.payment-dialog::backdrop{background:#0008}
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.payment-method{border:1px solid #ced4da;border-radius:10px;background:#fff;padding:10px;font-weight:600}
+.payment-method[aria-pressed="true"]{border-color:#0d6efd;background:#eef5ff;color:#0d6efd}
+.payment-qr{display:block;width:min(100%,360px);max-height:58vh;object-fit:contain;margin:0 auto}
+@media(max-width:768px){.sidebar{position:static;width:auto;min-height:0}.content{margin:0;padding:18px}}
+</style>
+<link rel="stylesheet" href="../css/background.css">
+</head>
+<body>
+<nav class="sidebar">
+  <h3>Vehicle Service</h3>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="../booking.html">Book Service</a>
+  <a href="../vehicle-parts.html">Vehicle &amp; Parts Catalogue</a>
+  <a href="../track-service.html">Track Vehicle</a>
+  <a href="../ai-chat.html">AI Assistant</a>
+  <a href="#" onclick="logout();return false;">Logout</a>
+</nav>
+<main class="content">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h2 id="dashboardWelcome">Customer Dashboard</h2>
+    <a class="btn btn-primary" href="../booking.html">Book New Service</a>
+  </header>
+  <div id="dashboardError" class="alert alert-danger" role="alert" hidden></div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="card shadow p-4"><h5>Vehicles Serviced</h5><h2 id="dashboardVehicleCount">0</h2></div></div>
+    <div class="col-md-4"><div class="card shadow p-4"><h5>Active Services</h5><h2 id="dashboardActiveCount">0</h2></div></div>
+    <div class="col-md-4"><div class="card shadow p-4"><h5>Completed Service Estimates</h5><h2 id="dashboardSpent">₹0</h2></div></div>
+  </div>
+  <section class="card shadow p-4 mb-4">
+    <h3>My Bookings and Service History</h3>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead><tr><th>Booking</th><th>Vehicle</th><th>Service</th><th>Updated estimate</th><th>Status</th><th></th></tr></thead>
+        <tbody id="dashboardBookings"></tbody>
+      </table>
+    </div>
+  </section>
+  <dialog id="paymentDialog" class="payment-dialog" aria-labelledby="paymentDialogTitle">
+    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+      <h3 id="paymentDialogTitle" class="h4 mb-0">Choose payment method</h3>
+      <button type="button" class="btn-close" aria-label="Close" onclick="document.getElementById('paymentDialog').close()"></button>
+    </div>
+    <div class="payment-methods mb-3" role="group" aria-label="Payment method">
+      <button id="paymentMethodUpi" class="payment-method" type="button" aria-pressed="true">UPI QR</button>
+      <button id="paymentMethodCard" class="payment-method" type="button" aria-pressed="false">Credit / debit card</button>
+    </div>
+    <div class="alert alert-info mb-3" role="note">
+      <div>Booking: <strong id="paymentBookingCode"></strong></div>
+      <div>Current estimate: <strong id="paymentAmount"></strong></div>
+    </div>
+    <div id="paymentUpiPanel" class="text-center">
+      <p class="mb-1 text-muted">Payee</p>
+      <p class="h5 mb-3">Tanmay Sawant</p>
+      <img class="payment-qr" src="../images/payment-qr-clean.jpeg" alt="UPI QR code for Tanmay Sawant">
+      <p class="mt-2 mb-1"><strong>UPI ID:</strong> tanmoysawant94@okicici</p>
+      <p class="alert alert-info mt-3 mb-0" role="note">Scan the QR with a UPI app. This estimate is not a final bill, and payment is not confirmed automatically. Keep your receipt and contact the service center to verify payment.</p>
+    </div>
+    <div id="paymentCardPanel" class="alert alert-warning mb-0" role="status" hidden>
+      <h4 class="h6">Card payment isn’t available yet</h4>
+      <p class="mb-0">Credit and debit card checkout is not connected. No card details are collected here. Choose UPI QR to pay using the QR code.</p>
+    </div>
+  </dialog>
+  <section class="card shadow p-4">
+    <h3>AI Vehicle Assistant</h3>
+    <p>Describe symptoms like engine noise, low mileage, or overheating to see possible causes and recommended service.</p>
+    <input id="dashboardAiMessage" class="form-control mb-3" placeholder="e.g. My engine is making a knocking noise">
+    <button class="btn btn-outline-primary" type="button" onclick="openAssistant()">Ask AI</button>
+  </section>
+</main>
+<script src="../js/script.js?v=vehicle-problem-prediction-1"></script>
+</body>
+</html>

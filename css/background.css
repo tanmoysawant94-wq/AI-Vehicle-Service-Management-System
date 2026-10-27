@@ -1,0 +1,51 @@
+body {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 12% 8%, rgba(54, 127, 255, 0.14), transparent 34%),
+        radial-gradient(ellipse at 88% 78%, rgba(24, 174, 153, 0.13), transparent 32%),
+        radial-gradient(ellipse at 83% 10%, rgba(255, 184, 77, 0.12), transparent 25%),
+        linear-gradient(145deg, #f6f9fd 0%, #edf3f8 48%, #e8f1f6 100%);
+    background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.42;
+    background-image:
+        radial-gradient(circle, rgba(43, 94, 150, 0.15) 1px, transparent 1.5px),
+        linear-gradient(122deg, transparent 0 48%, rgba(255, 255, 255, 0.55) 49%, transparent 50%);
+    background-size: 28px 28px, 110px 110px;
+}
+
+.card,
+.booking-card,
+.login-box,
+.register-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    box-shadow: 0 12px 32px rgba(34, 65, 103, 0.09);
+    backdrop-filter: blur(10px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body {
+        background-size: auto, auto, auto, 180% 180%;
+        animation: background-drift 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes background-drift {
+        from {
+            background-position: 0 0, 0 0, 0 0, 0% 50%;
+        }
+
+        to {
+            background-position: 0 0, 0 0, 0 0, 100% 50%;
+        }
+    }
+}

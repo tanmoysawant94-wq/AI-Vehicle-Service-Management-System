@@ -1,0 +1,9 @@
+{
+    "name": "vehicle-service/management-system",
+    "description": "Vehicle service management system",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.0",
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
